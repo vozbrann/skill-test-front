@@ -1,0 +1,227 @@
+{
+  "testTaken": [
+    {
+      "answers": {
+        "0": [
+          "0"
+        ],
+        "1": [
+          "3"
+        ],
+        "2": [
+          "2"
+        ]
+      },
+      "canceled": false,
+      "test_id": "0",
+      "user_id": "0",
+      "start_time": 1587202162640,
+      "public": true,
+      "id": "lH3kxtl",
+      "score": "80"
+    },
+    {
+      "answers": null,
+      "canceled": false,
+      "test_id": "0",
+      "user_id": "0",
+      "start_time": 1587207194738,
+      "public": false,
+      "id": "drD_bu6"
+    }
+  ],
+  "tests": [
+    {
+      "id": "0",
+      "title": "JavaScript",
+      "description": "JavaScript — динамічна, об'єктно-орієнтована прототипна мова програмування. Реалізація стандарту ECMAScript.",
+      "time_interval": "1800000",
+      "time_between_attempts": "30",
+      "questions": [
+        {
+          "id": "0",
+          "text": "Чему равно это выражение?",
+          "code": "[].push(1,2).unshift(3).join()",
+          "type": "0",
+          "progLang": "js",
+          "answers": [
+            {
+              "id": "0",
+              "text": "3,1",
+              "is_correct": "0"
+            },
+            {
+              "id": "1",
+              "text": "1,2,3",
+              "is_correct": "0"
+            },
+            {
+              "id": "2",
+              "text": "3,1,2",
+              "is_correct": "0"
+            },
+            {
+              "id": "3",
+              "text": "В коде ошибка.",
+              "is_correct": "1"
+            }
+          ]
+        },
+        {
+          "id": "1",
+          "text": "Чему равно i в конце кода?",
+          "code": "for(let i=0; i<10; i++) {\n  console.log(i);\n}\n// i = ?",
+          "type": "0",
+          "progLang": "js",
+          "answers": [
+            {
+              "id": "0",
+              "text": "undefined",
+              "is_correct": "0"
+            },
+            {
+              "id": "1",
+              "text": "9",
+              "is_correct": "0"
+            },
+            {
+              "id": "2",
+              "text": "10",
+              "is_correct": "0"
+            },
+            {
+              "id": "3",
+              "text": "Нет такой переменной после цикла.",
+              "is_correct": "1"
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "text": "Какие варианты вызова try..catch являются синтаксически верными в JavaScript?",
+          "code": "",
+          "type": "1",
+          "progLang": "",
+          "answers": [
+            {
+              "id": "0",
+              "text": "try { ... } без catch/finally.",
+              "is_correct": "0"
+            },
+            {
+              "id": "1",
+              "text": "try { ... } catch { ... }",
+              "is_correct": "0"
+            },
+            {
+              "id": "2",
+              "text": "try { ... } finally { ... }",
+              "is_correct": "1"
+            },
+            {
+              "id": "3",
+              "text": "try { ... } catch { ... } finally { ... }",
+              "is_correct": "1"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "1",
+      "title": "HTML",
+      "description": "JavaScript — динамічна, об'єктно-орієнтована прототипна мова програмування. Реалізація стандарту ECMAScript.",
+      "time_interval": "1800000",
+      "time_between_attempts": "30",
+      "questions": [
+        {
+          "id": "0",
+          "text": "Чему равно это выражение?",
+          "code": "[].push(1,2).unshift(3).join()",
+          "type": "0",
+          "progLang": "js",
+          "answers": [
+            {
+              "id": "0",
+              "text": "3,1",
+              "is_correct": "0"
+            },
+            {
+              "id": "1",
+              "text": "1,2,3",
+              "is_correct": "0"
+            },
+            {
+              "id": "2",
+              "text": "3,1,2",
+              "is_correct": "0"
+            },
+            {
+              "id": "3",
+              "text": "В коде ошибка.",
+              "is_correct": "1"
+            }
+          ]
+        },
+        {
+          "id": "1",
+          "text": "Чему равно i в конце кода?",
+          "code": "for(let i=0; i<10; i++) {\n  console.log(i);\n}\n// i = ?",
+          "type": "0",
+          "progLang": "js",
+          "answers": [
+            {
+              "id": "0",
+              "text": "undefined",
+              "is_correct": "0"
+            },
+            {
+              "id": "1",
+              "text": "9",
+              "is_correct": "0"
+            },
+            {
+              "id": "2",
+              "text": "10",
+              "is_correct": "0"
+            },
+            {
+              "id": "3",
+              "text": "Нет такой переменной после цикла.",
+              "is_correct": "1"
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "text": "Какие варианты вызова try..catch являются синтаксически верными в JavaScript?",
+          "code": "",
+          "type": "1",
+          "progLang": "",
+          "answers": [
+            {
+              "id": "0",
+              "text": "try { ... } без catch/finally.",
+              "is_correct": "0"
+            },
+            {
+              "id": "1",
+              "text": "try { ... } catch { ... }",
+              "is_correct": "0"
+            },
+            {
+              "id": "2",
+              "text": "try { ... } finally { ... }",
+              "is_correct": "1"
+            },
+            {
+              "id": "3",
+              "text": "try { ... } catch { ... } finally { ... }",
+              "is_correct": "1"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
