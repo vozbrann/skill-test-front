@@ -103,6 +103,7 @@ const CreateTest = () => {
     e.preventDefault();
     dispatch(testCreate({
       ...testInfo,
+      time_interval: testInfo.time_interval * 60000,
       questions
     }));
   };

@@ -23,11 +23,10 @@ const CardDescription = styled.p`
 `;
 
 const TestCard = ({testInfo}) => {
-
   return (
     <Row className="shadow mx-0 mb-4 rounded">
       <Col md={4} className="px-0">
-        <CardImage className="rounded-md-left rounded-top" src="https://source.unsplash.com/random"/>
+        <CardImage src="https://source.unsplash.com/random"/>
       </Col>
       <Col md={8} className="px-3 py-4 d-flex flex-column justify-content-between">
         <div>

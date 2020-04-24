@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Button from 'react-bootstrap/Button';
 
@@ -10,27 +10,41 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 
-import {useSelector, useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 
-import { useParams } from "react-router";
+import {useParams} from 'react-router';
 
-import {testCancel} from '../../store/actions/testActions'
+import {testCancel} from '../../store/actions/testActions';
 
 const InfoBar = () => {
   const [show, setShow] = useState(false);
+  const [timer, setTimer] = useState('00:00');
+
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const isLoading = useSelector(state => state.test.isLoading);
   const errorMessage = useSelector(state => state.test.errorMessage);
+  const test = useSelector(state => state.test.test);
+  const testTaken = useSelector(state => state.test.testTaken);
 
   const dispatch = useDispatch();
 
-  let { id } = useParams();
+  let {id} = useParams();
   const stopTestHandle = () => {
     handleClose();
     dispatch(testCancel(id));
   };
+
+  useEffect(() => {
+    setTimer(
+      ((testTaken.start_time + parseInt(test.time_interval) -
+        new Date().getTime()) / 60000).toFixed(2) + '');
+
+    setInterval(() => setTimer(
+      ((testTaken.start_time + parseInt(test.time_interval) -
+        new Date().getTime()) / 60000).toFixed(2) + ''), 1000);
+  }, []);
 
   return (
     <div className="py-3 shadow-sm">
@@ -47,7 +61,7 @@ const InfoBar = () => {
             Return to test
           </Button>
           <Button variant="danger" onClick={stopTestHandle}>
-            {isLoading ? "Loading..." : "Stop"}
+            {isLoading ? 'Loading...' : 'Stop'}
           </Button>
         </Modal.Footer>
       </Modal>
@@ -55,12 +69,12 @@ const InfoBar = () => {
         <div className="d-flex justify-content-between align-items-center">
           <h2 className="m-0">HTML</h2>
           {errorMessage &&
-            <Alert variant="danger m-0">
-              {errorMessage}
-            </Alert>
+          <Alert variant="danger m-0">
+            {errorMessage}
+          </Alert>
           }
-          <div>
-            <span>29.99 <Image className="mb-1" src={alarmImg}/></span>
+          <div className="d-flex align-items-center">
+            <span>{timer}<Image className="mb-1 ml-1" src={alarmImg}/></span>
             <Button onClick={handleShow} className="ml-3" variant="light">
               <Image src={exitImg}/>
             </Button>

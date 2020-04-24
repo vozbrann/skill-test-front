@@ -7,23 +7,27 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 
 import TestCard from './TestCard';
 import {useDispatch, useSelector} from 'react-redux';
 
 const Catalog = () => {
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
 
   const testInfoList = useSelector(state => state.testInfo.testInfoList);
   const errorMessage = useSelector(state => state.testInfo.errorMessage);
-  const testInfoListLoading = useSelector(state => state.testInfo.testInfoListLoading);
-
+  const testInfoListLoading = useSelector(
+    state => state.testInfo.testInfoListLoading);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(testInfoListFetch());
   }, []);
+
+  const renderedTests = testInfoList.filter(el => el.title.toLowerCase().includes(searchValue.toLowerCase()))
+    .map(testInfo => <TestCard key={testInfo.id} testInfo={testInfo}/>);
 
   return (
     <div>
@@ -46,14 +50,20 @@ const Catalog = () => {
           </Col>
         </Row>
 
-        {errorMessage &&
-          <Alert variant="danger">
-            {errorMessage}
-          </Alert>
+        {testInfoListLoading ?
+          <div className="text-center">
+            <Spinner animation="border" />
+          </div> :
+          <>
+            {errorMessage ?
+              <Alert variant="danger">
+                {errorMessage}
+              </Alert>
+              :
+              <>{!!renderedTests.length ? renderedTests : <p className="h3 text-center">No test</p>}</>
+            }
+          </>
         }
-
-        {!!testInfoList.length &&
-        testInfoList.filter(el => el.title.includes(searchValue)).map(testInfo => <TestCard key={testInfo.id} testInfo={testInfo}/>)}
       </Container>
     </div>
   );

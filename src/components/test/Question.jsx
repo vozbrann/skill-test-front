@@ -5,7 +5,7 @@ import Prism from "prismjs";
 import "prismjs/components/prism-jsx.min"
 import "prismjs/themes/prism.css";
 
-const Question = ({question}) => {
+const Question = ({question, cheatingDetected}) => {
   let type = '';
   if (question.type === "0") {
     type = "radio";
@@ -19,7 +19,11 @@ const Question = ({question}) => {
 
   return (
     <>
-      <div className="mb-3">
+      <div
+        className="mb-3"
+        onCopy={cheatingDetected}
+        onCut={cheatingDetected}
+      >
         <p>{question.text}</p>
         {question.code &&
           <pre>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect }  from 'react';
+import {testCancel} from '../../store/actions/testActions';
 import InfoBar from './InfoBar';
+import {useParams} from 'react-router';
 
 import { useHistory, Redirect } from "react-router-dom";
 
@@ -7,6 +9,8 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Toast from 'react-bootstrap/Toast';
+import Badge from 'react-bootstrap/Badge';
 
 import styled from 'styled-components';
 import Question from './Question';
@@ -15,6 +19,7 @@ import TestInfo from './TestInfo';
 import QuestionsPreviewList from './QuestionsPreviewList';
 import {testSubmit} from '../../store/actions/testActions';
 import LoadingFullscreen from '../LoadingFullscreen';
+import Modal from 'react-bootstrap/Modal';
 
 const ControlBtn = styled(Button)`
   width: 100px;
@@ -22,7 +27,8 @@ const ControlBtn = styled(Button)`
 
 const Test = () => {
   const [currentTestIndex, setCurrentTestIndex] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showCheatingMessage, setShowCheatingMessage] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
 
   const test = useSelector(state => state.test.test);
   const testTaken = useSelector(state => state.test.testTaken);
@@ -32,6 +38,29 @@ const Test = () => {
 
   const dispatch = useDispatch();
 
+  const cheatingDetected = () => {
+    setShowCheatingMessage(true);
+  };
+
+  let {id} = useParams();
+  const onUnload = e => { // the method that will be used for both add and remove event
+    if (test) {
+      e.preventDefault();
+      e.returnValue = 'Test progress will be lost';
+      dispatch(testCancel(id));
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('blur', cheatingDetected);
+    window.addEventListener("beforeunload", onUnload);
+    // Specify how to clean up after this effect:
+    return () => {
+      window.removeEventListener('blur', cheatingDetected);
+      window.removeEventListener("beforeunload", onUnload);
+    };
+  }, [test]);
+
   const handleSubmit = () => {
     dispatch(testSubmit());
   };
@@ -40,17 +69,52 @@ const Test = () => {
     return <Redirect to={"/test/score/"+testFinishedId}/>
   }
 
+  const numberUnansweredQuestions = test && test.questions ?
+    test.questions.filter(question => {
+      return !selectedAnswers[question.id] || selectedAnswers[question.id].length === 0
+    }).length : 0;
   return (
-    <>
+    <div>
       {!test ? <TestInfo/> :
         <>
+          <Modal show={showSubmitModal} onHide={() => setShowSubmitModal(false)}>
+            <Modal.Header closeButton>
+              <Modal.Title>Are you sure?</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>You are going to submit the test.</p>
+              {!!numberUnansweredQuestions &&
+                <p>You have <Badge pill variant="warning">{numberUnansweredQuestions}</Badge> not answered {numberUnansweredQuestions === 1? "question" : "questions"}!</p>
+              }
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={() => setShowSubmitModal(false)}>
+                Return to test
+              </Button>
+              <Button variant="primary" onClick={handleSubmit}>Submit</Button>
+            </Modal.Footer>
+          </Modal>
+          <Toast
+            onClose={() => setShowCheatingMessage(false)} show={showCheatingMessage}
+            style={{
+            position: 'absolute',
+            bottom: 80,
+            right: "2%",
+            zIndex: 10,
+            width: "300px"
+          }}>
+            <Toast.Header>
+              <strong className="mr-auto">Cheating detected</strong>
+            </Toast.Header>
+            <Toast.Body>Don't leave the page. And don't try to copy questions.</Toast.Body>
+          </Toast>
           {isLoading && <LoadingFullscreen/>}
           <InfoBar/>
           <Container className="mb-5">
             <Row>
               <QuestionsPreviewList currentTestIndex={currentTestIndex} setCurrentTestIndex={setCurrentTestIndex}/>
               <Col sm={9} className="px-5 py-4">
-                <Question question={test.questions[currentTestIndex]}/>
+                <Question cheatingDetected={cheatingDetected} question={test.questions[currentTestIndex]}/>
               </Col>
             </Row>
           </Container>
@@ -69,7 +133,7 @@ const Test = () => {
                 variant={currentTestIndex === test.questions.length-1 ? "success" : "primary"}
                 onClick={() => {
                   if (currentTestIndex === test.questions.length-1) {
-                    handleSubmit();
+                    setShowSubmitModal(true);
                   } else {
                     setCurrentTestIndex(currentTestIndex+1)
                   }
@@ -81,7 +145,7 @@ const Test = () => {
           </div>
         </>
       }
-    </>
+    </div>
   );
 };
 

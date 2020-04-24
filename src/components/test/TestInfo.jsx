@@ -60,11 +60,19 @@ const TestInfo = () => {
 
   return (
     <div>
-      {testInfoErrorMessage ?
+      {testInfoErrorMessage || testInfoLoading || !testInfo ?
         <Container className="my-5">
-          <Alert variant="danger">
-            {testInfoErrorMessage}
-          </Alert>
+          {testInfoLoading ?
+            <div className="text-center">
+              <Spinner animation="border"/>
+            </div>
+          :
+            <>
+              <Alert variant="danger">
+                {testInfoErrorMessage ? testInfoErrorMessage : "Test not found."}
+              </Alert>
+            </>
+          }
         </Container>
         :
         <>

@@ -7,29 +7,7 @@ import TestScorePreview from './TestScorePreview';
 import {testScoreListFetch, testScorePublic} from '../../store/actions/testScoreActions';
 import {useDispatch, useSelector} from 'react-redux';
 import Alert from 'react-bootstrap/Alert';
-
-// const testScoreList = [
-//   {
-//     id: "1",
-//     title: "HTML",
-//     public: "0",
-//     result: "80",
-//     date: "1586875423296"
-//   },
-//   {
-//     id: "2",
-//     title: "CSS",
-//     public: "1",
-//     result: "67",
-//     date: "1586875423296"
-//   },
-//   {
-//     id: "3",
-//     title: "JS",
-//     result: "20",
-//     date: "1586875423296"
-//   }
-// ];
+import Spinner from 'react-bootstrap/Spinner';
 
 const TestScoreList = () => {
 
@@ -92,18 +70,26 @@ const TestScoreList = () => {
       }
       <Container className="my-3">
         <h1 className="mb-3">My results</h1>
-        {testScoreListErrorMessage ?
-          <Alert variant="danger">
-            {testScoreListErrorMessage}
-          </Alert>
-          :
-          <div>
-            {testScoreList.map(el => (
-              <TestScorePreview key={el.id}
-                                handleShowStatusChange={() => handleShowStatusChange(
-                                  el)} testResult={el}/>
-            )).reverse()}
+        {testScoreListLoading ?
+          <div className="text-center">
+            <Spinner animation="border" />
           </div>
+          :
+          <>
+            {testScoreListErrorMessage ?
+              <Alert variant="danger">
+                {testScoreListErrorMessage}
+              </Alert>
+              :
+              <div>
+                {testScoreList.map(el => (
+                  <TestScorePreview key={el.id}
+                                    handleShowStatusChange={() => handleShowStatusChange(
+                                      el)} testResult={el}/>
+                )).reverse()}
+              </div>
+            }
+          </>
         }
       </Container>
     </div>
