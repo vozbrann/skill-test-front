@@ -10,6 +10,8 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 
+import {testSubmit} from '../../store/actions/testActions';
+
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useParams} from 'react-router';
@@ -17,18 +19,42 @@ import {useParams} from 'react-router';
 import {testCancel} from '../../store/actions/testActions';
 
 const InfoBar = () => {
-  const [show, setShow] = useState(false);
-  const [timer, setTimer] = useState('00:00');
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
-
   const isLoading = useSelector(state => state.test.isLoading);
   const errorMessage = useSelector(state => state.test.errorMessage);
   const test = useSelector(state => state.test.test);
   const testTaken = useSelector(state => state.test.testTaken);
 
+  const [timeFinish, setTimeFinish] = useState(new Date().getTime() + parseInt(test.time_interval));
+
   const dispatch = useDispatch();
+
+  const calculateTimeLeft = () => {
+    const difference = timeFinish +  - +new Date();
+    let timeLeft = {
+      hours: 0,
+      minutes: 0,
+      seconds: 0
+    };
+
+    if (difference > 0) {
+      timeLeft = {
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60)
+      };
+    } else {
+      // console.log("time finish");
+      dispatch(testSubmit());
+    }
+
+    return timeLeft;
+  };
+
+  const [show, setShow] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   let {id} = useParams();
   const stopTestHandle = () => {
@@ -37,14 +63,14 @@ const InfoBar = () => {
   };
 
   useEffect(() => {
-    setTimer(
-      ((testTaken.start_time + parseInt(test.time_interval) -
-        new Date().getTime()) / 60000).toFixed(2) + '');
+    let timer = setTimeout(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
 
-    setInterval(() => setTimer(
-      ((testTaken.start_time + parseInt(test.time_interval) -
-        new Date().getTime()) / 60000).toFixed(2) + ''), 1000);
-  }, []);
+    return () => {
+      clearTimeout(timer)
+    }
+  });
 
   return (
     <div className="py-3 shadow-sm">
@@ -74,7 +100,7 @@ const InfoBar = () => {
           </Alert>
           }
           <div className="d-flex align-items-center">
-            <span>{timer}<Image className="mb-1 ml-1" src={alarmImg}/></span>
+            <span>{timeLeft.hours + ":" + timeLeft.minutes + ":" + timeLeft.seconds}<Image className="mb-1 ml-1" src={alarmImg}/></span>
             <Button onClick={handleShow} className="ml-3" variant="light">
               <Image src={exitImg}/>
             </Button>

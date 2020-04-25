@@ -25,6 +25,7 @@ const AnswersBlock = ({id, type, answers}) => {
     dispatch(updateAnswers({...selectedAnswers, [id]:newAnswer }))
   };
 
+  console.log(answers);
   return (
     <Container fluid="lg">
       <Row>

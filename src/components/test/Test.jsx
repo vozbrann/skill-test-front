@@ -39,25 +39,29 @@ const Test = () => {
   const dispatch = useDispatch();
 
   const cheatingDetected = () => {
-    setShowCheatingMessage(true);
-  };
-
-  let {id} = useParams();
-  const onUnload = e => { // the method that will be used for both add and remove event
-    if (test) {
-      e.preventDefault();
-      e.returnValue = 'Test progress will be lost';
-      dispatch(testCancel(id));
+    if (!!test) {
+      setShowCheatingMessage(true);
     }
   };
 
+  const onBeforeUnload = e => { // the method that will be used for both add and remove event
+    if (test) {
+      e.preventDefault();
+      e.returnValue = 'Test progress will be lost';
+    }
+  };
+
+
   useEffect(() => {
     window.addEventListener('blur', cheatingDetected);
-    window.addEventListener("beforeunload", onUnload);
+    window.addEventListener("beforeunload", onBeforeUnload);
     // Specify how to clean up after this effect:
+  }, [test]);
+
+  useEffect(() => {
     return () => {
       window.removeEventListener('blur', cheatingDetected);
-      window.removeEventListener("beforeunload", onUnload);
+      window.removeEventListener("beforeunload", onBeforeUnload);
     };
   }, [test]);
 

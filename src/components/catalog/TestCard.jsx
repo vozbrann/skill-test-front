@@ -37,7 +37,7 @@ const TestCard = ({testInfo}) => {
           <Button as={Link} to={"/test/"+testInfo.id} variant="primary">View</Button>
           <p className="align-self-end m-0">
             <Image className="pb-1 mr-1" src={alarmImage}/>
-            <span>{testInfo.time_interval} min</span>
+            <span>{testInfo.time_interval/60000} min</span>
           </p>
         </div>
       </Col>
