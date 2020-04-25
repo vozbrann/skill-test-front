@@ -1,12 +1,7 @@
 import { AUTH_ERROR, AUTH_LOADING, AUTH_USER } from '../actions/types'
 
 const initialState = {
-  user: {
-    id: "0",
-    name: "testName",
-    email: "test@email",
-    img: "https://source.unsplash.com/random",
-  },
+  user: null,
   errorMessage: '',
   isLoading: false,
 };

@@ -16,7 +16,7 @@ import { Redirect } from 'react-router-dom/';
 import * as yup from 'yup';
 
 const schema = yup.object({
-  email: yup.string().email().required(),
+  username: yup.string().required(),
   password: yup.string().min(8).required()
 });
 
@@ -29,7 +29,7 @@ const Login = () => {
 
   const {handleSubmit, handleChange, values, errors } = useFormik({
     initialValues: {
-      email: '',
+      username: '',
       password: ''
     },
     validationSchema: schema,
@@ -47,18 +47,18 @@ const Login = () => {
           <Col xs lg="4">
             <h3 className="text-center">Log in</h3>
             <Form className="mb-3" onSubmit={handleSubmit}>
-              <Form.Group controlId="formGroupEmail">
-                <Form.Label>Email address</Form.Label>
+              <Form.Group controlId="formGroupUsername">
+                <Form.Label>Username</Form.Label>
                 <Form.Control
-                  name="email"
-                  type="email"
-                  placeholder="Enter email"
+                  name="username"
+                  type="text"
+                  placeholder="Enter username"
                   onChange={handleChange}
-                  value={values.email}
-                  isInvalid={!!errors.email}
+                  value={values.username}
+                  isInvalid={!!errors.username}
                 />
                 <Form.Control.Feedback type="invalid">
-                  {errors.email}
+                  {errors.username}
                 </Form.Control.Feedback>
               </Form.Group>
               <Form.Group controlId="formGroupPassword">

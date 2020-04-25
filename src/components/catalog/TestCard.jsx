@@ -36,8 +36,8 @@ const TestCard = ({testInfo}) => {
         <div className="d-flex justify-content-between">
           <Button as={Link} to={"/test/"+testInfo.id} variant="primary">View</Button>
           <p className="align-self-end m-0">
-            <Image className="pb-1 mr-1" src={alarmImage}/>
-            <span>{testInfo.time_interval/60000} min</span>
+            <span>Duration: {testInfo.time_interval}</span>
+            <Image className="pb-1 ml-1" src={alarmImage}/>
           </p>
         </div>
       </Col>

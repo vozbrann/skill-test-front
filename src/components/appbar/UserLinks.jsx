@@ -34,7 +34,7 @@ const UserLinks = () => {
       <Nav>
         <NavDropdown
           alignRight
-          title={<UserRoundImage src={user.img} roundedCircle />}
+          title={<UserRoundImage src='https://source.unsplash.com/random' roundedCircle />}
         >
           <NavDropdown.Item as={Link} to="/profile">Profile</NavDropdown.Item>
           <NavDropdown.Divider />

@@ -10,8 +10,8 @@ const GuestLinks = () => {
         <Nav.Link as={Link} to="/catalog">Catalog</Nav.Link>
       </Nav>
       <Nav>
-        <Button className="ml-3" as={Link} to="Login" variant="outline-primary">Login</Button>
-        <Button className="ml-3" as={Link} to="signUp" variant="primary">Sign up</Button>
+        <Button className="ml-3" as={Link} to="/Login" variant="outline-primary">Login</Button>
+        <Button className="ml-3" as={Link} to="/signUp" variant="primary">Sign up</Button>
       </Nav>
     </>
   );

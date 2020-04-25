@@ -17,10 +17,10 @@ const Profile = () => {
         <Container>
           <Row className="py-5">
             <Col sm={3}>
-              <Image style={{width: "100%",height: "300px", objectFit: "cover"}} src={user.img}/>
+              <Image style={{width: "100%",height: "300px", objectFit: "cover"}} src='https://source.unsplash.com/random'/>
             </Col>
             <Col>
-              <p className="h3">{user.name}</p>
+              <p className="h3">{user.username}</p>
               <p className="h5">Email: {user.email}</p>
             </Col>
           </Row>

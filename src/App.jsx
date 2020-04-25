@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import {fetchUser} from './store/actions/authActions'
 
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom'
 import AppBar from './components/appbar/AppBar';
@@ -7,7 +9,7 @@ import Login from './components/authorisation/Login';
 import SignUp from './components/authorisation/SignUp';
 import Catalog from './components/catalog/Catalog';
 import Test from './components/test/Test';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Profile from './components/profile/Profile';
 import TestScoreList from './components/testResults/TestScoreList';
 import TestScore from './components/testResults/TestScore';
@@ -15,6 +17,12 @@ import CreateTest from './components/createTest/CreateTest';
 
 function App() {
   const test = useSelector(state => state.test.test);
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchUser());
+  });
+
   return (
     <BrowserRouter>
       <div className="App">

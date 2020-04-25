@@ -10,13 +10,11 @@ import Container from 'react-bootstrap/Container';
 import Modal from 'react-bootstrap/Modal';
 import Alert from 'react-bootstrap/Alert';
 
-import {testSubmit} from '../../store/actions/testActions';
+import {testCancel, testSubmit} from '../../store/actions/testActions';
 
 import {useDispatch, useSelector} from 'react-redux';
 
 import {useParams} from 'react-router';
-
-import {testCancel} from '../../store/actions/testActions';
 
 const InfoBar = () => {
   const isLoading = useSelector(state => state.test.isLoading);
@@ -24,23 +22,26 @@ const InfoBar = () => {
   const test = useSelector(state => state.test.test);
   const testTaken = useSelector(state => state.test.testTaken);
 
-  const [timeFinish, setTimeFinish] = useState(new Date().getTime() + parseInt(test.time_interval));
+  const [timeFinish, setTimeFinish] = useState(
+    new Date().getTime() + parseInt(test.time_interval.split(':')[0]) *
+    3600000 + parseInt(test.time_interval.split(':')[1]) * 60000 +
+    parseInt(test.time_interval.split(':')[2]));
 
   const dispatch = useDispatch();
 
   const calculateTimeLeft = () => {
-    const difference = timeFinish +  - +new Date();
+    const difference = timeFinish + -+new Date();
     let timeLeft = {
       hours: 0,
       minutes: 0,
-      seconds: 0
+      seconds: 0,
     };
 
     if (difference > 0) {
       timeLeft = {
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60)
+        seconds: Math.floor((difference / 1000) % 60),
       };
     } else {
       // console.log("time finish");
@@ -68,8 +69,8 @@ const InfoBar = () => {
     }, 1000);
 
     return () => {
-      clearTimeout(timer)
-    }
+      clearTimeout(timer);
+    };
   });
 
   return (
@@ -100,7 +101,9 @@ const InfoBar = () => {
           </Alert>
           }
           <div className="d-flex align-items-center">
-            <span>{timeLeft.hours + ":" + timeLeft.minutes + ":" + timeLeft.seconds}<Image className="mb-1 ml-1" src={alarmImg}/></span>
+            <span>{timeLeft.hours + ':' + timeLeft.minutes + ':' +
+            timeLeft.seconds}<Image className="mb-1 ml-1"
+                                    src={alarmImg}/></span>
             <Button onClick={handleShow} className="ml-3" variant="light">
               <Image src={exitImg}/>
             </Button>

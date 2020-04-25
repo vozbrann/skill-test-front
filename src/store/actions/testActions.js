@@ -87,9 +87,8 @@ export const testStart = (id) => {
           })
       })
       .catch((error) => {
-        console.log(error);
-        if(error.response) {
-          dispatch(testError(error.response.data.errorText));
+        if(error.response.statusText) {
+          dispatch(testError(error.response.statusText));
         } else {
           dispatch(testError("Something went wrong."));
         }

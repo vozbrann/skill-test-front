@@ -34,7 +34,7 @@ const testInfoListLoading = bool => ({
 export const testInfoFetch = (id) => {
   return (dispatch, getState) => {
     dispatch(testInfoLoading(true));
-    axios.get(`http://localhost:3000/tests/${id}`)
+    axios.get(`http://localhost:8000/skillful/tests-info/${id}/`)
       .then((response) => {
         dispatch(testInfoSet(response.data));
         dispatch(testInfoLoading(false));
@@ -53,7 +53,7 @@ export const testInfoFetch = (id) => {
 export const testInfoListFetch = () => {
   return (dispatch, getState) => {
     dispatch(testInfoListLoading(true));
-    axios.get(`http://localhost:3000/tests/`)
+    axios.get(`http://localhost:8000/skillful/tests-info/`)
       .then((response) => {
         dispatch(testInfoListSet(response.data));
         dispatch(testInfoListLoading(false));

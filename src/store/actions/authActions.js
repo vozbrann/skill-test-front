@@ -24,25 +24,48 @@ export const logout = () => {
   }
 };
 
+
+export const fetchUser = () => {
+  return (dispatch, getState) => {
+    dispatch(authLoading(true));
+    axios({
+      method: 'get',
+      url: 'http://localhost:8000/skillful/current_user/',
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': `JWT ${localStorage.getItem("access_token")}`
+      },
+    })
+      .then((response) => {
+        dispatch(authUser(response.data));
+        dispatch(authLoading(false));
+      })
+      .catch((error) => {
+        logout();
+        if(error.response) {
+          dispatch(authError(error.response.data.errorText));
+        } else {
+          dispatch(authError("Something went wrong."));
+        }
+        dispatch(authLoading(false));
+      });
+  }
+};
+
 export const loginFetch = user => {
   return (dispatch, getState) => {
     dispatch(authLoading(true));
-
-    let bodyFormData = new FormData();
-    bodyFormData.set('email', user.email);
-    bodyFormData.set('password', user.password);
     axios({
       method: 'post',
-      url: 'https://localhost:44362/login',
-      data: bodyFormData,
+      url: 'http://localhost:8000/token-auth/',
+      data: user,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json'
       },
     })
       .then((response) => {
-        localStorage.setItem("access_token", response.data.access_token);
-        dispatch(authUser(response.data));
+        localStorage.setItem("access_token", response.data.token);
+        dispatch(authUser(response.data.user));
         dispatch(authLoading(false));
       })
       .catch((error) => {
@@ -59,23 +82,16 @@ export const loginFetch = user => {
 export const signUpFetch = user => {
   return (dispatch, getState) => {
     dispatch(authLoading(true));
-
-    let bodyFormData = new FormData();
-    bodyFormData.set('name', user.name);
-    bodyFormData.set('email', user.email);
-    bodyFormData.set('password', user.password);
-    bodyFormData.set('confirmPassword', user.confirmPassword);
     axios({
       method: 'post',
-      url: 'https://localhost:44362/login',
-      data: bodyFormData,
+      url: 'http://localhost:8000/skillful/users/',
+      data: user,
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
         'Accept': 'application/json'
       },
     })
       .then((response) => {
-        localStorage.setItem("access_token", response.data.access_token);
+        localStorage.setItem("access_token", response.data.token);
         dispatch(authUser(response.data));
         dispatch(authLoading(false));
       })

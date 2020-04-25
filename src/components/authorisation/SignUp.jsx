@@ -38,7 +38,7 @@ const SignUp = () => {
     },
     validationSchema: schema,
     onSubmit: values => {
-      dispatch(signUpFetch(values));
+      dispatch(signUpFetch({username:values.name, email:values.email, password:values.password}));
     },
   });
 
